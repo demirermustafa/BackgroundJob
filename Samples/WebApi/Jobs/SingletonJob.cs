@@ -6,10 +6,10 @@ using Quartz;
 namespace WebApi
 {
     [DisallowConcurrentExecution]
-    public class CacheUpdateJob : IJob
+    public class SingletonJob : IJob
     {
-        private readonly ILogger<CacheUpdateJob> _logger;
-        public CacheUpdateJob(ILogger<CacheUpdateJob> logger)
+        private readonly ILogger<SingletonJob> _logger;
+        public SingletonJob(ILogger<SingletonJob> logger)
         {
             _logger = logger;
         }

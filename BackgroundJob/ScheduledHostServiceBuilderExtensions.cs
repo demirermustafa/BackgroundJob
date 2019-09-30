@@ -7,14 +7,13 @@ namespace BackgroundJob
 {
     public static class ScheduledHostServiceBuilderExtensions
     {
-        public static ScheduledHostServiceBuilder AddJob(this ScheduledHostServiceBuilder builder, Type type, string cronExpression, ServiceLifetime serviceLifetime,
-            string description = null)
+        public static ScheduledHostServiceBuilder AddJob(this ScheduledHostServiceBuilder builder, Type type, string cronExpression, string description = null)
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
-            builder.Services.Add(new ServiceDescriptor(type, type, serviceLifetime));
-            builder.Services.AddSingleton(new ScheduledJob(type, cronExpression, serviceLifetime, description));
-            
+            builder.Services.Add(new ServiceDescriptor(type, type, ServiceLifetime.Singleton));
+            builder.Services.AddSingleton(new ScheduledJob(type, cronExpression, description));
+
             return builder;
         }
 
@@ -22,7 +21,7 @@ namespace BackgroundJob
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
 
-            builder.Services.Add(jobs.Select(job => new ServiceDescriptor(job.Type, job.Type, job.ServiceLifetime)));
+            builder.Services.Add(jobs.Select(job => new ServiceDescriptor(job.Type, job.Type, ServiceLifetime.Singleton)));
             jobs.ToList().ForEach(job => builder.Services.AddSingleton(job));
 
             return builder;

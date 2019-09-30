@@ -1,20 +1,13 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BackgroundJob
 {
     public class ScheduledJob
     {
-        public ScheduledJob(Type type, string cronExpression, ServiceLifetime serviceLifetime)
+        public ScheduledJob(Type type, string cronExpression, string description = null)
         {
             Type = type;
             CronExpression = cronExpression;
-            ServiceLifetime = serviceLifetime;
-        }
-
-        public ScheduledJob(Type type, string cronExpression, ServiceLifetime serviceLifetime, string description)
-        : this(type, cronExpression, serviceLifetime)
-        {
             Description = description;
         }
 
@@ -23,7 +16,5 @@ namespace BackgroundJob
         public string CronExpression { get; }
 
         public string Description { get; }
-
-        public ServiceLifetime ServiceLifetime { get; }
     }
 }

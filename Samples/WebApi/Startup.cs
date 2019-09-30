@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
+using WebApi.Jobs;
 
 namespace WebApi
 {
@@ -29,9 +30,11 @@ namespace WebApi
                 .CreateLogger();
             Log.Logger = log;
 
+            services.AddScoped<IScopedSampleService, ScopedSampleService>();
+
             services.AddScheduledHostedService()
-                .AddJob(typeof(CacheUpdateJob), "0/5 * * * * ?", ServiceLifetime.Singleton)
-                .AddJob(new ScheduledJob(typeof(HelloWorldJob), "0/5 * * * * ?", ServiceLifetime.Singleton));
+                .AddJob(typeof(SingletonJob), "0/5 * * * * ?")
+                .AddJob(new ScheduledJob(typeof(ScopedJob), "0/5 * * * * ?"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
